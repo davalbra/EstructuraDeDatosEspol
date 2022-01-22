@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package estructurasdatos;
+package Main;
 
 /**
  *
  * @author david
  */
-public class EstructurasDatos {
+public class Main {
 
     /**
      * @param args the command line arguments
