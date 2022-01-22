@@ -10,44 +10,54 @@ import java.util.PriorityQueue;
 import java.util.Stack;
 
 public class BinaryTree<T> {
-    
+
     private BinaryNode<T> root;
+
     //constructor
     public BinaryTree() {
         this.root = new BinaryNode<>();
     }
+
     //constructor
     public BinaryTree(BinaryNode<T> root) {
         this.root = root;
     }
+
     //constructor
     public BinaryTree(T content) {
         this.root = new BinaryNode<>(content);
     }
+
     //method to add a component left
     public void setLeft(BinaryTree<T> tree) {
         this.root.setLeft(tree);
     }
+
     //method to add a component right
     public void setRight(BinaryTree<T> tree) {
         this.root.setRight(tree);
     }
+
     //method to return the component left
     public BinaryTree<T> getLeft() {
         return this.root.getLeft();
     }
-    //method do return the component right 
+
+    //method do return the component right
     public BinaryTree<T> getRight() {
         return this.root.getRight();
     }
+
     //method to know if the tree is empty
     public boolean isEmpty() {
         return this.root == null;
     }
+
     //metod to now if the component is a leaf
     public boolean isLeaf() {
         return this.root.getLeft() == null && this.root.getRight() == null;
     }
+
     //metodo to count leaves recursive
     public int countLeavesRecursive() {
         if (this.isEmpty()) {
@@ -66,6 +76,7 @@ public class BinaryTree<T> {
             return leavesLeft + leavesRight;
         }
     }
+
     //metodo to count leaves iterative
     public int countLeavesIterative() {
         Stack<BinaryTree<T>> stack = new Stack();
@@ -90,6 +101,7 @@ public class BinaryTree<T> {
         }
         return count;
     }
+
     //metodo to search a component recursive
     public BinaryNode<T> searchRecursive(T content, Comparator<T> cmp) {
         if (this.isEmpty()) {
@@ -111,6 +123,7 @@ public class BinaryTree<T> {
             }
         }
     }
+
     //metodo to search a component iterative
     public BinaryNode<T> searchIterative(T content, Comparator<T> cmp) {
         Stack<BinaryTree<T>> stack = new Stack();
@@ -140,6 +153,7 @@ public class BinaryTree<T> {
         return null;
 
     }
+
     //metodo to return the least of all content from the tree recursive
     public BinaryNode<T> getMinRecursive(Comparator<T> cmp) {
 
@@ -165,6 +179,7 @@ public class BinaryTree<T> {
         }
 
     }
+
     //metodo to return the least of all content from the tree recursive
     public BinaryNode<T> getMinIterative(Comparator<T> cmp) {
         Stack<BinaryTree<T>> stack = new Stack<>();
@@ -189,6 +204,7 @@ public class BinaryTree<T> {
         }
         return menor;
     }
+
     //method to coun the childrens recursive
     public int countDescendantsRecursive() {
         if (this.isEmpty()) {
@@ -208,6 +224,7 @@ public class BinaryTree<T> {
             return leaves;
         }
     }
+
     ////method to coun the childrens iterative
     public int countDescendantsIterative() {
         Stack<BinaryTree<T>> stack = new Stack();
@@ -231,41 +248,48 @@ public class BinaryTree<T> {
         }
         return count;
     }
-    //Tarea: 
+    //Tarea:
 
     //    1) Implemente el método findParent, que dado un nodo de árbol binario, retorna el padre
     //          correspondiente.La implementación de su método debe considerar que el nodo raíz no tiene un padre
-    public BinaryNode<T> findParentRecursive(BinaryNode<T> nodo) {
+    public BinaryNode<T> findParentRecursive(BinaryNode<T> nodo, Comparator<T> cmp) {
         if (this.isEmpty()) {
             return null;
-        } else {
-            BinaryNode<T> retorno = null;
-
-            if (this.root.getLeft() != null) {
-
-                if (this.root.getLeft().getRoot() == nodo) {
-                    return this.root;
-                }
-                retorno = this.root.getLeft().findParentRecursive(nodo);
-            }
-            if (this.root.getRight() != null) {
-                if (this.root.getRight().getRoot() == nodo) {
-                    return this.root;
-                }
-                retorno = this.root.getRight().findParentRecursive(nodo);
-            }
-            return retorno;
         }
+        BinaryNode<T> retorno = null;
+
+        if (this.root.getLeft() != null) {
+
+            if (cmp.compare(this.root.getLeft().getRoot().getContent(), nodo.getContent()) == 0) {
+                return root;
+            }
+            BinaryNode<T> verificar = getLeft().findParentRecursive(nodo, cmp);
+            if (verificar != null) {
+                retorno = verificar;
+            }
+        }
+
+        if (this.root.getRight() != null) {
+            if (cmp.compare(getRight().getRoot().getContent(), nodo.getContent()) == 0) {
+                return root;
+            }
+            BinaryNode<T> verificar = getRight().findParentRecursive(nodo, cmp);
+            if (verificar != null) {
+                retorno = verificar;
+            }
+        }
+        return retorno;
+
     }
 
-    public BinaryNode<T> findParentIterative(BinaryNode<T> n) {
-        if (n == null) {
-            return n;
+    public BinaryNode<T> findParentIterative(BinaryNode<T> nodo, Comparator<T> cmp) {
+        if (nodo == null) {
+            return nodo;
         }
         if (isEmpty()) {
             return null;
         }
-        if (n == getRoot()) {
+        if (nodo == getRoot()) {
             return null;
         }
         Stack<BinaryTree<T>> stack = new Stack();
@@ -273,23 +297,18 @@ public class BinaryTree<T> {
         while (!stack.empty()) {
             BinaryTree<T> subtree = stack.pop();
             if (subtree.root.getLeft() != null) {
-                BinaryNode<T> Ln = subtree.root.getLeft().getRoot();
-                if (Ln == n) {
+                if (cmp.compare(getLeft().getRoot().getContent(), nodo.getContent()) == 0) {
                     return subtree.root;
-                } else {
-                    stack.push(subtree.root.getLeft());
                 }
+                stack.push(subtree.root.getLeft());
             }
             if (subtree.root.getRight() != null) {
-                BinaryNode<T> Rn = subtree.root.getRight().getRoot();
-                if (Rn == n) {
+                if (cmp.compare(getRight().getRoot().getContent(), nodo.getContent()) == 0) {
                     return subtree.root;
-                } else {
-                    stack.push(subtree.root.getRight());
                 }
+                stack.push(subtree.root.getRight());
             }
         }
-
         return null;
     }
 //    2 Implemente el método countLevels que calcule el número de niveles de árbol
@@ -301,51 +320,52 @@ public class BinaryTree<T> {
         } else if (this.isLeaf()) {
             return 1;
         } else {
-            int leavesLeft = 0;
-            int leavesRight = 0;
+            int levelLeft = 0;
+            int levelRight = 0;
             if (this.root.getLeft() != null) {
-                leavesLeft += this.root.getLeft().countLevelsRecursive() + 1;
+                levelLeft += this.root.getLeft().countLevelsRecursive() + 1;
             }
             if (this.root.getRight() != null) {
-                leavesRight += this.root.getRight().countLevelsRecursive() + 1;
+                levelRight += this.root.getRight().countLevelsRecursive() + 1;
             }
-            return (leavesLeft >= leavesRight ? leavesLeft : leavesRight);
+            return (levelLeft >= levelRight ? levelLeft : levelRight);
 
         }
     }
 
     public int countLevelsIterative() {
-        Stack<BinaryTree<T>> stack = new Stack();
-        int count = 0;
-        if (this.isEmpty()) {
-            return count;
-        } else {
-            stack.push(this);
-            while (!stack.empty()) {
-                BinaryTree<T> subtree = stack.pop();
-                if (!subtree.isLeaf()) {
-                    if (subtree.root.getLeft() != null) {
-                        stack.push(subtree.root.getLeft());
-                    } else {
-                        stack.push(new BinaryTree<>(root.getContent()));
-                    }
-                    if (subtree.root.getRight() != null) {
-                        stack.push(subtree.root.getRight());
-                    } else {
-                        stack.push(new BinaryTree<>(root.getContent()));
-                    }
-                } else {
-                    if (count < stack.size()) {
-                        count = stack.size();
-                    }
-                }
-            }
-        }
+        int level = 0;
+        if (!isEmpty()) {
+            int elementosRestantes = 1;
+            int elementosEnNivel = 0;
+            Stack<BinaryTree<T>> tree = new Stack<>();
+            tree.add(this);
+            while (!tree.isEmpty()) {
+                BinaryTree<T> subtree = tree.pop();
+                elementosRestantes--;
 
-        return count + 1;
+                if (subtree.getLeft()!=null) {
+                    tree.add(subtree.getLeft());
+                    elementosEnNivel++;
+                }
+                if (subtree.getRight()!=null) {
+                    tree.add(subtree.getRight());
+                    elementosEnNivel++;
+                }
+
+                if (elementosRestantes == 0) {
+                    level++;
+                    elementosRestantes = elementosEnNivel;
+                    elementosEnNivel = 0;
+                }
+
+            }
+
+        }
+        return level;
     }
 
-//    3. Se dice que un árbol binario es zurdo si el árbol 1) está vacío, 2) es una hoja , o 3) si sus 
+//    3. Se dice que un árbol binario es zurdo si el árbol 1) está vacío, 2) es una hoja , o 3) si sus
 //    hijos son ambos zurdos y tiense a más de la mitad de sus descendientes en el hijo izquierdo
 //    Implementar el método isLefty que indique si un árbol binario es zurdo o no
     public int logicaIsLeftyRecursive() {
@@ -602,7 +622,7 @@ public class BinaryTree<T> {
     }
 //   7) El método isHeightBalanced debe retornar si un árbol binario está balanceado en altura o
 //    no. Un árbol vacío está siempre balanceado en altura. Un árbol binario no vacío está
-//    balanceado si y solo si: 
+//    balanceado si y solo si:
 
     public boolean isHeightBalancedRecursive() {
         if (isEmpty()) {
@@ -699,6 +719,7 @@ public class BinaryTree<T> {
         }
 
     }
+
     //getters and setters method
     public BinaryNode<T> getRoot() {
         return root;
