@@ -5,13 +5,14 @@
  */
 package Main;
 
+
+import TDAABB.BTSTree;
 import TDABT.BinaryNode;
 import TDABT.BinaryTree;
 import TDABalancedTree.BalancedTree;
 import TDAGrafo.GraphAM;
 import TDAGrafo.Personas;
 import TDAHeap.Heap;
-import TDAHeap.Persona;
 import TDAHuffman.BinaryTreeHM;
 import TDAHuffman.HuffmanInfo;
 import java.io.BufferedReader;
@@ -200,15 +201,15 @@ public class Main {
     }
     public static void TDAHeap(){
     
-        Heap<Persona> ah = new Heap<>(false, (a, b) -> {
+        Heap<Personas> ah = new Heap<>(false, (a, b) -> {
             return a.getEdad() - b.getEdad();
         });
-        ah.insert(new Persona(10, "juan", true));
-        ah.insert(new Persona(9, "paula", true));
-        ah.insert(new Persona(170, "maria", true));
-        ah.insert(new Persona(15, "mercedes", true));
-        ah.insert(new Persona(40, "toral", true));
-        ah.insert(new Persona(12, "delita", true));
+        ah.insert(new Personas("juan",1));
+        ah.insert(new Personas("paula",2));
+        ah.insert(new Personas("maria",3));
+        ah.insert(new Personas("mercedes",4 ));
+        ah.insert(new Personas("toral",5 ));
+        ah.insert(new Personas("delita",6));
         ah.imprimirArreglo();
         ah.desencolar();
         ah.imprimirArreglo();
@@ -286,5 +287,9 @@ public class Main {
         } catch (Exception e) {
             System.out.println("error al escribir ");
         }
+    }
+    public static void binarySearchTree(){
+
+
     }
 }
