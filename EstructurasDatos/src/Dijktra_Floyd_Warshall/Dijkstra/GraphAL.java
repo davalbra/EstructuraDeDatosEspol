@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package TDADinamicGrafo;
+package Dijktra_Floyd_Warshall.Dijkstra;
 
+import TDADinamicGrafo.*;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;

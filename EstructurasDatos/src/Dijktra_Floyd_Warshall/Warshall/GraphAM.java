@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package TDAGrafo;
+package Dijktra_Floyd_Warshall.Warshall;
 
+import TDAGrafo.*;
 import java.util.Comparator;
 
 /**
@@ -26,10 +27,6 @@ public class GraphAM<V> {
         adjacencyMatrix = new int[capacity][capacity];
         this.isDirected = isDirected;
         initAdjacencyMatrix();
-    }
-
-    public boolean isEmpty() {
-        return vertices.length == 0;
     }
 
     public void printArreglo() {
@@ -60,14 +57,12 @@ public class GraphAM<V> {
         removeIndex(index);
         return false;
     }
-
     private void removeIndex(int index) {
         for (int i = index; i < effectiveSize - 1; i++) {
             vertices[i] = vertices[i + 1];
         }
         effectiveSize--;
     }
-
     public boolean borrarArco(V v1, V v2) {
         if (v1 == null || v2 == null) {
             return false;
@@ -93,7 +88,7 @@ public class GraphAM<V> {
         if (a == -1 || b == -1) {
             return false;
         }
-        return adjacencyMatrix[a][b] == 1;
+        return adjacencyMatrix[a][b]==1;
     }
 
     public boolean connect(V v1, V v2) {
