@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -344,11 +345,11 @@ public class BinaryTree<T> {
                 BinaryTree<T> subtree = tree.pop();
                 elementosRestantes--;
 
-                if (subtree.getLeft()!=null) {
+                if (subtree.getLeft() != null) {
                     tree.add(subtree.getLeft());
                     elementosEnNivel++;
                 }
-                if (subtree.getRight()!=null) {
+                if (subtree.getRight() != null) {
                     tree.add(subtree.getRight());
                     elementosEnNivel++;
                 }
@@ -504,68 +505,89 @@ public class BinaryTree<T> {
 //    debe imprimir el mayor valor presente en cada nivel de un árbol binario cuyos nodos
 //    contienen números enteros. Ejemplos:
 
-    public static Map<Integer, ArrayList<Integer>> calculo(BinaryTree<Integer> arbol, Map<Integer, ArrayList<Integer>> mapa, int nivel) {
-        if (!mapa.containsKey(nivel)) {
-            mapa.put(nivel, new ArrayList<>());
+    public void largestValueOfEachLevelRecursive(Comparator<T> cmp) {
+        List<T> valores = new ArrayList<>();
+        Recursive(this.getRoot(), valores, 0, cmp);
+        for (T valor : valores) {
+            System.out.print(valor + " ");
         }
-        if (arbol.isEmpty()) {
-            return null;
-        } else {
-            mapa.get(nivel).add(arbol.getRoot().getContent());
-//            Map<Integer, ArrayList<Integer>> maper = null;
-            if (arbol.root.getLeft() != null) {
-                mapa = arbol.root.getLeft().calculo(arbol.root.getLeft(), mapa, nivel + 1);
-            }
-            if (arbol.root.getRight() != null) {
-                mapa = arbol.root.getRight().calculo(arbol.root.getRight(), mapa, nivel + 1);
-            }
-            return mapa;
-        }
-    }
-
-    public static void largestValueOfEachLevelRecursive(BinaryTree<Integer> arbol) {
-        Map<Integer, ArrayList<Integer>> mapa = new HashMap<>();
-        Map<Integer, ArrayList<Integer>> resultado = calculo(arbol, mapa, 0);
-        for (int i = 0; i < resultado.size(); i++) {
-            int contenido = resultado.get(i).get(0);
-            for (int j = 1; j < resultado.get(i).size(); j++) {
-                if (contenido < resultado.get(i).get(i)) {
-                    contenido = resultado.get(i).get(i);
-                }
-            }
-            System.out.println("nivel: " + i + " mayor: " + contenido);
-
-        }
+        System.out.println("");
 
     }
 
-    public static void largestValueOfEachLevelIterative(BinaryTree<Integer> arbol) {
-        Stack<BinaryNode<Integer>> padres = new Stack();
-
-        if (arbol.isEmpty()) {
-            System.out.println("null");
+    public void Recursive(BinaryNode<T> node, List<T> valores, int level, Comparator<T> cmp) {
+        if (node == null) {
+            return;
+        }
+        if (level == valores.size()) {
+            valores.add(node.getContent());
         } else {
-            padres.push(arbol.getRoot());
-            while (!padres.empty()) {
-                PriorityQueue<Integer> colle = new PriorityQueue<>((a, b) -> {
-                    return b - a;
-                });
-                Stack<BinaryNode<Integer>> hijos = new Stack();
-                while (!padres.empty()) {
-                    BinaryNode<Integer> hijo = padres.pop();
-                    colle.add(hijo.getContent());
-                    if (hijo.getLeft() != null) {
-                        hijos.push(hijo.getLeft().getRoot());
-                    }
-                    if (hijo.getRight() != null) {
-                        hijos.push(hijo.getRight().getRoot());
-                    }
-                }
-                System.out.println(colle.poll());
-                padres = hijos;
+            if (cmp.compare(valores.get(level), node.getContent()) >= 0) {
+                valores.set(level, valores.get(level));
+            } else {
+                valores.set(level, node.getContent());
+            }
 
+        }
+        if (node.getLeft() != null) {
+            Recursive(node.getLeft().getRoot(), valores, level + 1, cmp);
+        }
+        if (node.getRight() != null) {
+            Recursive(node.getRight().getRoot(), valores, level + 1, cmp);
+        }
+
+    }
+
+    public void largestValueOfEachLevelIterative(Comparator<T> cmp) {
+        if (this.isEmpty()) {
+            return;
+        }
+        Stack<BinaryNode<T>> pila = new Stack();
+        pila.push(root);
+
+        Map<BinaryNode<T>, Integer> mapa = new HashMap();
+
+        Map<Integer, List<T>> valoresNivel = new HashMap();
+
+        mapa.put(root, 1);
+
+        while (!pila.isEmpty()) {
+
+            BinaryNode<T> bn = pila.pop();
+            int nivel = mapa.get(bn) + 1;
+            if (bn.getLeft() != null) {
+                BinaryNode<T> izquierdo = bn.getLeft().getRoot();
+                pila.push(izquierdo);
+                mapa.put(izquierdo, nivel);
+                if (valoresNivel.containsKey(nivel)) {
+                    valoresNivel.get(nivel).add(izquierdo.getContent());
+                } else {
+                    List<T> l1 = new LinkedList();
+                    l1.add(izquierdo.getContent());
+                    valoresNivel.put(nivel, l1);
+                }
+            }
+            if (bn.getRight() != null) {
+                BinaryNode<T> derecho = bn.getRight().getRoot();
+                pila.push(derecho);
+
+                mapa.put(derecho, nivel);
+                if (valoresNivel.containsKey(nivel)) {
+                    valoresNivel.get(nivel).add(derecho.getContent());
+                } else {
+                    List<T> lista = new LinkedList();
+                    lista.add(derecho.getContent());
+                    valoresNivel.put(nivel, lista);
+                }
             }
         }
+        System.out.print(root.getContent() + " ");
+
+        valoresNivel.keySet().forEach(i -> {
+            System.out.print(valoresNivel.get(i).stream().max(cmp).get() + " ");
+        });
+
+        System.out.println("");
     }
 //6. El método countNodesWithOnlyChild debe retornar el número de nodos de un árbol que
 //tienen un solo hijo. Ejemplo:
@@ -628,13 +650,19 @@ public class BinaryTree<T> {
         if (isEmpty()) {
             return true;
         }
-        if (getLeft() != null && getRight() != null) {
-            return getLeft().isHeightBalancedRecursive() && getRight().isHeightBalancedRecursive();
-        } else if (getLeft() == null && getRight() == null) {
+        if (isLeaf()) {
             return true;
+        }
+        if (getLeft() != null && getRight() != null) {
+            int diferencia = this.getLeft().countLevelsRecursive() - this.getRight().countLevelsRecursive();
+            if (diferencia == 1 || diferencia == 0 || diferencia == -1) {
+                return getLeft().isHeightBalancedRecursive() && getRight().isHeightBalancedRecursive();
+            }
+            return false;
+        } else if (this.getLeft() != null) {
+            return this.getLeft().isLeaf();
         } else {
-            BinaryTree<T> hoja = (getLeft() != null) ? getLeft() : getRight();
-            return hoja.isLeaf();
+            return this.getRight().isLeaf();
         }
     }
 

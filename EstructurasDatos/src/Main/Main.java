@@ -186,9 +186,9 @@ public class Main {
         System.out.println("propuesta iterativa de isIdentical: " + bt8);
         //*********************5***********************
         System.out.println("recursivo de largestValueOfEachLevel: ");
-        BinaryTree.largestValueOfEachLevelRecursive(tree);
+        tree.largestValueOfEachLevelRecursive(cmp);
         System.out.println("iterativo de largestValueOfEachLevel: ");
-        BinaryTree.largestValueOfEachLevelIterative(tree);
+        tree.largestValueOfEachLevelIterative(cmp);
         //*********************6***********************  
         int bt9 = tree.countNodesWithOnlyChildRecursive();
         System.out.println("propuesta recursiva de countNodesWithOnlyChild: " + bt9);
