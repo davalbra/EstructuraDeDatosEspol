@@ -11,45 +11,45 @@ import TDADinamicGrafo.*;
  *
  * @author david
  */
-class Edge<E, V> {
+class EdgeDijkstra<E, V> {
 
-    private Vertex<V, E> source;
-    private Vertex<V, E> target;
+    private VertexDijkstra<V, E> source;
+    private VertexDijkstra<V, E> target;
     private int weight;
     private E data;
 
-    public Edge(Vertex<V, E> source, Vertex<V, E> target, int weight, E data) {
+    public EdgeDijkstra(VertexDijkstra<V, E> source, VertexDijkstra<V, E> target, int weight, E data) {
         this.source = source;
         this.target = target;
         this.weight = weight;
         this.data = data;
     }
 
-    public Edge(Vertex<V, E> source, Vertex<V, E> target, int weight) {
+    public EdgeDijkstra(VertexDijkstra<V, E> source, VertexDijkstra<V, E> target, int weight) {
         this(source, target, weight, null);
     }
 
-    public Edge(Vertex<V, E> source, Vertex<V, E> target, E data) {
+    public EdgeDijkstra(VertexDijkstra<V, E> source, VertexDijkstra<V, E> target, E data) {
         this(source, target, -1, data);
     }
 
-    public Edge(Vertex<V, E> source, Vertex<V, E> target) {
+    public EdgeDijkstra(VertexDijkstra<V, E> source, VertexDijkstra<V, E> target) {
         this(source, target, -1, null);
     }
 
-    public Vertex<V, E> getSource() {
+    public VertexDijkstra<V, E> getSource() {
         return source;
     }
 
-    public void setSource(Vertex<V, E> source) {
+    public void setSource(VertexDijkstra<V, E> source) {
         this.source = source;
     }
 
-    public Vertex<V, E> getTarget() {
+    public VertexDijkstra<V, E> getTarget() {
         return target;
     }
 
-    public void setTarget(Vertex<V, E> target) {
+    public void setTarget(VertexDijkstra<V, E> target) {
         this.target = target;
     }
 

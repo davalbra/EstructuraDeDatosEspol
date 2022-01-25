@@ -5,7 +5,10 @@
  */
 package Main;
 
-
+import Dijktra_Floyd_Warshall.Dijkstra.GraphALDijkstra;
+import Dijktra_Floyd_Warshall.Dijkstra.VertexDijkstra;
+import Dijktra_Floyd_Warshall.Floyd_Warschall.GraphAMFloyd;
+import Dijktra_Floyd_Warshall.Warshall.GraphAMwarshall;
 import TDAABB.BTSTree;
 import TDABT.BinaryNode;
 import TDABT.BinaryTree;
@@ -23,6 +26,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -34,9 +38,79 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
+        Warshallalgorithm();
     }
-    
+    public static void Warshallalgorithm(){
+        GraphAMwarshall<Integer> grafo=new GraphAMwarshall<>(true,(a, b) -> {
+            return a-b; //To change body of generated lambdas, choose Tools | Templates.
+        });
+        grafo.addVertex(1);
+        grafo.addVertex(2);
+        grafo.addVertex(3);
+        grafo.addVertex(4);
+        grafo.connect(1, 4,3);
+        grafo.connect(2, 1,7);
+        grafo.connect(2, 4,8);
+        grafo.connect(2, 3,2);
+        grafo.connect(3, 1,5);
+        grafo.connect(3, 4,1);
+        grafo.connect(4, 3,2);
+        grafo.printAdjacencyMatrix();
+        System.out.println("--------------");
+        grafo.Warshall();
+    }
+    public static void FloyAlgorithm(){
+        GraphAMFloyd<Integer> grafo=new GraphAMFloyd<>(true,(a, b) -> {
+            return a-b; //To change body of generated lambdas, choose Tools | Templates.
+        });
+        grafo.addVertex(1);
+        grafo.addVertex(2);
+        grafo.addVertex(3);
+        grafo.addVertex(4);
+        grafo.connect(1, 2,3);
+        grafo.connect(1, 4,7);
+        grafo.connect(2, 1,8);
+        grafo.connect(2, 3,2);
+        grafo.connect(3, 1,5);
+        grafo.connect(3, 4,1);
+        grafo.connect(4, 1,2);
+        grafo.printAdjacencyMatrix();
+        System.out.println("--------------");
+        grafo.Floyd();
+    }
+    public static void DijktraAlgorithm() {
+        GraphALDijkstra<String, Integer> grafo1 = new GraphALDijkstra<>(true, (a, b) -> {
+            return a.compareTo(b);
+        });
+        grafo1.addVertex("A");
+        grafo1.addVertex("B");
+        grafo1.addVertex("C");
+        grafo1.addVertex("D");
+        grafo1.addVertex("E");
+        grafo1.addVertex("F");
+        grafo1.conect("A", "B", 3, 4);
+        grafo1.conect("A", "E", 8, 4);
+        grafo1.conect("A", "C", 4, 4);
+        grafo1.conect("B", "E", 5, 4);
+        grafo1.conect("C", "E", 3, 4);
+        grafo1.conect("E", "F", 3, 4);
+        grafo1.conect("E", "D", 7, 4);
+        grafo1.conect("F", "D", 2, 4);
+        System.out.println("cantidad de conexiones in: " + grafo1.getInDegree("B"));
+        System.out.println("cantidad de conexiones out: " + grafo1.getOutDegree("A"));
+        System.out.println("tamanio: " + grafo1.recorrerEnAnchuraByV("A").size());
+        Iterator<VertexDijkstra<String, Integer>> it = grafo1.recorrerEnAnchuraByV("A").iterator();
+        while (it.hasNext()) {
+            VertexDijkstra<String, Integer> v = it.next();
+            System.out.println(v);
+        }
+        Map<String,Integer> mapa=grafo1.DijkstraAlgorith("A");
+        Set<String> claves=mapa.keySet();
+        for (String clave : claves) {
+            System.out.println("Valor: "+clave+" Distancia: "+mapa.get(clave));
+        }
+    }
+
     public static void BinaryTree() {
         BinaryTree<Integer> treeisllefty = new BinaryTree(0);
         treeisllefty.setLeft(new BinaryTree(1));
@@ -128,8 +202,9 @@ public class Main {
         boolean bt12 = tree.isHeightBalancedIterative();
         System.out.println("propuesta iterativa de countNodesWithOnlyChild: " + bt12);
     }
-    public static void BalancedTree(){
-    
+
+    public static void BalancedTree() {
+
         BalancedTree<Integer, String> arbol = new BalancedTree<>();
         arbol.setCmp((a, b) -> {
             return a.compareTo(b);
@@ -170,8 +245,9 @@ public class Main {
 //        System.out.println(arbol.isHeightBalancedRecursive());
 //        System.out.println(arbol.getRight().countLevelsRecursive());
     }
-    public static void StaticGrafo(){
-    
+
+    public static void StaticGrafo() {
+
         Comparator<Personas> cmp = new Comparator<Personas>() {
             @Override
             public int compare(Personas o1, Personas o2) {
@@ -186,7 +262,7 @@ public class Main {
         grafo.addVertex(new Personas("David", 20));
         grafo.addVertex(new Personas("Maria", 22));
         grafo.addVertex(new Personas("Andres", 21));
-        grafo.connect(grafo.getV(0), grafo.getV(1));
+        grafo.connect(grafo.getV(0), grafo.getV(1),4);
         System.out.println("booleano comprobar: " + grafo.isAdyacente(grafo.getV(0), grafo.getV(2)));
         grafo.printArreglo();
         grafo.printAdjacencyMatrix();
@@ -199,23 +275,29 @@ public class Main {
         grafo.printArreglo();
         grafo.printAdjacencyMatrix();
     }
-    public static void TDAHeap(){
-    
+
+    public static void TDAHeap() {
+
         Heap<Personas> ah = new Heap<>(false, (a, b) -> {
             return a.getEdad() - b.getEdad();
         });
-        ah.insert(new Personas("juan",1));
-        ah.insert(new Personas("paula",2));
-        ah.insert(new Personas("maria",3));
-        ah.insert(new Personas("mercedes",4 ));
-        ah.insert(new Personas("toral",5 ));
-        ah.insert(new Personas("delita",6));
+        ah.insert(new Personas("juan", 1));
+        ah.insert(new Personas("paula", 2));
+        ah.insert(new Personas("maria", 3));
+        ah.insert(new Personas("mercedes", 4));
+        ah.insert(new Personas("toral", 5));
+        ah.insert(new Personas("delita", 6));
         ah.imprimirArreglo();
         ah.desencolar();
         ah.imprimirArreglo();
     }
-    public static void HuffmanInfo(){
-    
+
+    public static void binarySearchTree() {
+
+    }
+
+    public static void HuffmanInfo() {
+
         String cadena = leerArchivo("src/Texto/tex.txt");
         System.out.println(cadena);
         System.out.println("------------------1------------------");
@@ -239,8 +321,8 @@ public class Main {
         System.out.println("------------------5------------------");
         System.out.println(HuffmanInfo.decode(mapa2, HuffmanInfo.encode(mapa1, cadena)));
         System.out.println("------------------6------------------");
-        
-        escribirArchivo("src/Texto/tex1.txt", HuffmanInfo.encode(mapa1,cadena));
+
+        escribirArchivo("src/Texto/tex1.txt", HuffmanInfo.encode(mapa1, cadena));
         System.out.println("------------------7------------------");
         escribirArchivo("src/Texto/tex2.txt", HuffmanInfo.decode(mapa2, HuffmanInfo.encode(mapa1, cadena)));
     }
@@ -287,9 +369,5 @@ public class Main {
         } catch (Exception e) {
             System.out.println("error al escribir ");
         }
-    }
-    public static void binarySearchTree(){
-
-
     }
 }

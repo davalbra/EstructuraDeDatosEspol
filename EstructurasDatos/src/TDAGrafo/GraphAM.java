@@ -5,6 +5,8 @@
  */
 package TDAGrafo;
 
+import Dijktra_Floyd_Warshall.Floyd_Warschall.*;
+import TDAGrafo.*;
 import java.util.Comparator;
 
 /**
@@ -28,9 +30,6 @@ public class GraphAM<V> {
         initAdjacencyMatrix();
     }
 
-    public boolean isEmpty() {
-        return vertices.length == 0;
-    }
 
     public void printArreglo() {
         for (int i = 0; i < effectiveSize; i++) {
@@ -77,8 +76,8 @@ public class GraphAM<V> {
         if (a == -1 || b == -1) {
             return false;
         }
-        if (adjacencyMatrix[a][b] == 1) {
-            adjacencyMatrix[a][b] = -1;
+        adjacencyMatrix[a][b] = -1;
+        if (!isDirected) {
             adjacencyMatrix[b][a] = -1;
         }
         return true;
@@ -93,10 +92,10 @@ public class GraphAM<V> {
         if (a == -1 || b == -1) {
             return false;
         }
-        return adjacencyMatrix[a][b] == 1;
+        return adjacencyMatrix[a][b] != -1;
     }
 
-    public boolean connect(V v1, V v2) {
+    public boolean connect(V v1, V v2, int peso) {
         if (v1 == null || v2 == null) {
 
             return false;
@@ -106,8 +105,10 @@ public class GraphAM<V> {
         if (index1 == -1 && index2 == -1) {
             return false;
         }
-        adjacencyMatrix[index1][index2] = 1;
-        adjacencyMatrix[index2][index1] = 1;
+        adjacencyMatrix[index1][index2] = peso;
+        if (!isDirected) {
+            adjacencyMatrix[index2][index1] = peso;
+        }
         return true;
     }
 

@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Dijktra_Floyd_Warshall.Floyd_Warschall;
+package Dijktra_Floyd_Warshall.Warshall;
 
+import Dijktra_Floyd_Warshall.Floyd_Warschall.*;
 import TDAGrafo.*;
 import java.util.Comparator;
 
@@ -12,7 +13,7 @@ import java.util.Comparator;
  *
  * @author david
  */
-public class GraphAM<V> {
+public class GraphAMwarshall<V> {
 
     private V[] vertices;
     private int[][] adjacencyMatrix;
@@ -21,7 +22,7 @@ public class GraphAM<V> {
     private int capacity = 10;
     private boolean isDirected;
 
-    public GraphAM(boolean isDirected, Comparator<V> cmp) {
+    public GraphAMwarshall(boolean isDirected, Comparator<V> cmp) {
         this.cmp = cmp;
         vertices = (V[]) new Object[capacity];
         adjacencyMatrix = new int[capacity][capacity];
@@ -29,6 +30,43 @@ public class GraphAM<V> {
         initAdjacencyMatrix();
     }
 
+    //Floyd
+    public void Warshall() {
+        boolean[][] m = matriz0();
+
+        for (int k = 0; k < effectiveSize; k++) {
+            for (int i = 0; i < effectiveSize; i++) {
+                for (int j = 0; j < effectiveSize; j++) {
+                    m[i][j] = m[i][j] || (m[i][k] && m[k][j]);
+                }
+            }
+        }
+        for (int i = 0; i < effectiveSize; i++) {
+            for (int j = 0; j < effectiveSize; j++) {
+                System.out.print(" " + m[i][j]);
+            }
+            System.out.println("");
+        }
+    }
+
+    public boolean[][] matriz0() {
+        boolean[][] matrizsub0 = new boolean[effectiveSize][effectiveSize];
+        for (int i = 0; i < effectiveSize; i++) {
+            for (int j = 0; j < effectiveSize; j++) {
+                if (i == j) {
+                    matrizsub0[i][j] = false;
+                } else if (adjacencyMatrix[i][j] == -1) {
+                    System.out.println("i: " + i + " j: " + j);
+                    matrizsub0[i][j] = false;
+                } else {
+                    matrizsub0[i][j] = true;
+                }
+            }
+        }
+        return matrizsub0;
+    }
+
+    //Floyd
     public void printArreglo() {
         for (int i = 0; i < effectiveSize; i++) {
             System.out.print(" " + vertices[i]);
@@ -57,12 +95,14 @@ public class GraphAM<V> {
         removeIndex(index);
         return false;
     }
+
     private void removeIndex(int index) {
         for (int i = index; i < effectiveSize - 1; i++) {
             vertices[i] = vertices[i + 1];
         }
         effectiveSize--;
     }
+
     public boolean borrarArco(V v1, V v2) {
         if (v1 == null || v2 == null) {
             return false;
@@ -72,8 +112,8 @@ public class GraphAM<V> {
         if (a == -1 || b == -1) {
             return false;
         }
-        if (adjacencyMatrix[a][b] == 1) {
-            adjacencyMatrix[a][b] = -1;
+        adjacencyMatrix[a][b] = -1;
+        if (!isDirected) {
             adjacencyMatrix[b][a] = -1;
         }
         return true;
@@ -88,10 +128,10 @@ public class GraphAM<V> {
         if (a == -1 || b == -1) {
             return false;
         }
-        return adjacencyMatrix[a][b]==1;
+        return adjacencyMatrix[a][b] != -1;
     }
 
-    public boolean connect(V v1, V v2) {
+    public boolean connect(V v1, V v2, int peso) {
         if (v1 == null || v2 == null) {
 
             return false;
@@ -101,8 +141,10 @@ public class GraphAM<V> {
         if (index1 == -1 && index2 == -1) {
             return false;
         }
-        adjacencyMatrix[index1][index2] = 1;
-        adjacencyMatrix[index2][index1] = 1;
+        adjacencyMatrix[index1][index2] = peso;
+        if (!isDirected) {
+            adjacencyMatrix[index2][index1] = peso;
+        }
         return true;
     }
 
