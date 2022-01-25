@@ -667,67 +667,34 @@ public class BinaryTree<T> {
     }
 
     public boolean isHeightBalancedIterative() {
-        if (isEmpty()) {
+        if (this.isEmpty()) {
             return true;
         }
-        int Llevels = 0;
-        int Rlevels = 0;
 
-        if (getLeft() != null) {
-            Iterator<List<BinaryTree<T>>> it = getLeft().lvlIterator();
-            while (it.hasNext()) {
-                Llevels++;
-                it.next();
-            }
-        }
-        if (getRight() != null) {
-            Iterator<List<BinaryTree<T>>> it = getRight().lvlIterator();
-            while (it.hasNext()) {
-                Rlevels++;
-                it.next();
-            }
-        }
-        return Math.abs(Llevels - Rlevels) <= 1;
-    }
-
-    private Iterator<List<BinaryTree<T>>> lvlIterator() {
-        return new levelIterator<>(this);
-    }
-
-    private static class levelIterator<T> implements Iterator<List<BinaryTree<T>>> {
-
-        private final Stack<BinaryTree<T>> stack;
-        private final List<BinaryTree<T>> list;
-
-        public levelIterator(BinaryTree<T> arbol) {
-            stack = new Stack<>();
-            list = new ArrayList<>();
-            if (arbol != null) {
-                stack.push(arbol);
-            }
-        }
-
-        public boolean hasNext() {
-            return !stack.isEmpty();
-        }
-
-        public List<BinaryTree<T>> next() {
-            list.clear();
-            while (!stack.isEmpty()) {
-                list.add(stack.pop());
-            }
-            list.forEach(a -> {
-                if (a.getLeft() != null) {
-                    stack.push(a.getLeft());
+        Stack<BinaryTree<T>> pila = new Stack<>();
+        pila.push(this);
+        while (!pila.isEmpty()) {
+            BinaryTree<T> bn = pila.pop();
+            if (bn.getLeft() != null && bn.getRight() != null) {
+                int diferencia = bn.getLeft().countLevelsIterative() - bn.getRight().countLevelsIterative();
+                if (diferencia != 0 || diferencia != 1 || diferencia != -1) {
+                    return false;
                 }
-                if (a.getRight() != null) {
-                    stack.push(a.getRight());
+            }
+            if (bn.getLeft() != null) {
+                if (!bn.getLeft().isLeaf()) {
+                    return false;
                 }
-
-            });
-            return list;
+                pila.push(bn.getLeft());
+            }
+            if (bn.getRight()!= null) {
+                if (!bn.getRight().isLeaf()) {
+                    return false;
+                }
+                pila.push(bn.getRight());
+            }
         }
-
+        return true;
     }
 
     public static BinaryTree<Integer> findIntersection(BinaryTree<Integer> arbol1, BinaryTree<Integer> arbol2) {
