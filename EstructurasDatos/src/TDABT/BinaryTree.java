@@ -687,7 +687,7 @@ public class BinaryTree<T> {
                 }
                 pila.push(bn.getLeft());
             }
-            if (bn.getRight()!= null) {
+            if (bn.getRight() != null) {
                 if (!bn.getRight().isLeaf()) {
                     return false;
                 }
@@ -697,7 +697,7 @@ public class BinaryTree<T> {
         return true;
     }
 
-    public static BinaryTree<Integer> findIntersection(BinaryTree<Integer> arbol1, BinaryTree<Integer> arbol2) {
+    public BinaryTree<Integer> findIntersection(BinaryTree<Integer> arbol1, BinaryTree<Integer> arbol2) {
         if (arbol1.isEmpty() && arbol2.isEmpty()) {
             return null;
         } else if (arbol1.isLeaf() && arbol2.isLeaf()) {
@@ -715,7 +715,68 @@ public class BinaryTree<T> {
 
     }
 
+    public static BinaryTree<String> creandoArbolDeExpresion(String cadena) {
+        Stack<BinaryTree<String>> recuerdo = new Stack<>();
+        for (String a : cadena.split("")) {
+            if (isOperando(a)) {
+                recuerdo.push(new BinaryTree<>(a));
+            }
+            if (isOperador(a)) {
+                BinaryTree<String> token = new BinaryTree<>(a);
+                token.setRight(recuerdo.pop());
+                token.setLeft(recuerdo.pop());
+                recuerdo.push(token);
+            }
+        }
+        return recuerdo.pop();
+    }
+
+    public static int resultado(BinaryTree<String> arbol) {
+        if (arbol.isEmpty()) {
+            return 0;
+        }
+        if (arbol.isLeaf()) {
+            return Integer.parseInt(arbol.getRoot().getContent());
+        }
+        int leftR = 0;
+        int rightR = 0;
+        if (arbol.getLeft() != null) {
+            leftR = resultado(arbol.getLeft());
+        }
+        if (arbol.getRight() != null) {
+            rightR = resultado(arbol.getRight());
+        }
+        return operacion(rightR, leftR, arbol.getRoot().getContent());
+    }
+
+    private static boolean isOperador(String a) {
+        if (a.equals("-") || a.equals("+") || a.equals("*") || a.equals("/")) {
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean isOperando(String a) {
+        return !isOperador(a);
+    }
+
+    private static Integer operacion(Integer right, Integer left, String operador) {
+        switch (operador) {
+            case "+":
+                return left + right;
+            case "-":
+                return left - right;
+            case "*":
+                return left * right;
+            case "/":
+                return left / right;
+            default:
+                return null;
+        }
+
+    }
     //getters and setters method
+
     public BinaryNode<T> getRoot() {
         return root;
     }

@@ -16,8 +16,9 @@ public class BTSTree<K, V> {
     private BTSNode<K, V> root;
     private Comparator<K> cmp;
 
-    public BTSTree(Comparator<BTSNode<K, V>> cmp) {
+    public BTSTree(Comparator<K> cmp) {
         this.root = new BTSNode<>();
+        this.cmp = cmp;
     }
 
     public BTSTree(K k, V v) {
@@ -26,10 +27,6 @@ public class BTSTree<K, V> {
 
     public BTSTree(BTSNode<K, V> root) {
         this.root = root;
-    }
-
-    public BTSTree(K key,V content, Comparator<BTSNode<K, V>> cmp) {
-        this.root = new BTSNode<K, V>(key, content);
     }
 
     public BTSNode<K, V> getRoot() {
@@ -65,10 +62,28 @@ public class BTSTree<K, V> {
     }
 
     public void insertNodeByKEy(BTSTree<K, V> tree) {
-        if (this.isEmpty()) {
+        tree.setCmp(cmp);
+        System.out.println("actual: " + root.getKey());
+        System.out.println("llegada: " + tree.getRoot().getKey());
+        if (this.getRoot().getContent() == null) {
+            System.out.println("valor: " + tree.getRoot().getKey());
             root = tree.getRoot();
-        } else if (cmp.compare(root.getKey(), tree.getRoot().getKey()) < 0) {
+        } else if (cmp.compare(this.root.getKey(), tree.getRoot().getKey()) < 0) {
+            System.out.println("hola");
+            if (this.getRight() != null) {
+                getRight().insertNodeByKEy(tree);
+            } else {
+                this.setRight(tree);
+            }
+        } else {
+            System.out.println("chao");
+            if (this.getLeft() != null) {
+                System.out.println(this.getLeft().getRoot().getKey());
+                getLeft().insertNodeByKEy(tree);
 
+            } else {
+                this.setLeft(tree);
+            }
         }
     }
 
@@ -87,4 +102,31 @@ public class BTSTree<K, V> {
             }
         }
     }
+
+    public V buscarByKey(K k) {
+        if (this.isEmpty()) {
+            return null;
+        }
+        System.out.println("fF");
+        System.out.println("a: " + this.getRoot().getKey());
+        System.out.println("b: " + k);
+        if (cmp.compare(this.getRoot().getKey(), k) == 0) {
+            return root.getContent();
+        } else if (cmp.compare(this.getRoot().getKey(), k) < 0) {
+            this.getRight().buscarByKey(k);
+
+        } else {
+            this.getLeft().buscarByKey(k);
+        }
+        return null;
+    }
+
+    public Comparator<K> getCmp() {
+        return cmp;
+    }
+
+    public void setCmp(Comparator<K> cmp) {
+        this.cmp = cmp;
+    }
+
 }

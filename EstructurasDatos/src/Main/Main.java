@@ -38,46 +38,76 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Warshallalgorithm();
+        binarySearchTree();
     }
-    public static void Warshallalgorithm(){
-        GraphAMwarshall<Integer> grafo=new GraphAMwarshall<>(true,(a, b) -> {
-            return a-b; //To change body of generated lambdas, choose Tools | Templates.
+
+    public static void binarySearchTree() {
+        BTSTree<Integer, String> arbol = new BTSTree<>((a, b) -> {
+            return a - b;
+        });
+        arbol.insertNodeByKEy(new BTSTree<>(10, "david"));
+        System.out.println("++++++++++++++++++++++++++++");
+        arbol.insertNodeByKEy(new BTSTree<>(8, "did"));
+        System.out.println("++++++++++++++++++++++++++++");
+        arbol.insertNodeByKEy(new BTSTree<>(9, "dvid"));
+        System.out.println("++++++++++++++++++++++++++++");
+        arbol.insertNodeByKEy(new BTSTree<>(12, "avid"));
+        System.out.println("++++++++++++++++++++++++++++");
+        arbol.insertNodeByKEy(new BTSTree<>(11, "davi"));
+        System.out.println(arbol.getRoot().getContent());
+        System.out.println("busqueda: 11"+arbol.buscarByKey(8));
+    }
+
+    public static void creandoArbolDeExpresion() {
+        BinaryTree<String> result = BinaryTree.creandoArbolDeExpresion("12*35*-3+");
+        System.out.println(result.getRoot().getContent());
+        System.out.println(result.getRight().getRoot().getContent());
+        System.out.println(result.getLeft().getRoot().getContent());
+        System.out.println(result.getLeft().getRight().getRoot().getContent());
+        System.out.println(result.getLeft().getLeft().getRoot().getContent());
+        System.out.println("resultado de la operacion del arbol: " + BinaryTree.resultado(result));
+    }
+
+    public static void Warshallalgorithm() {
+        GraphAMwarshall<Integer> grafo = new GraphAMwarshall<>(true, (a, b) -> {
+            return a - b; //To change body of generated lambdas, choose Tools | Templates.
         });
         grafo.addVertex(1);
         grafo.addVertex(2);
         grafo.addVertex(3);
         grafo.addVertex(4);
-        grafo.connect(1, 4,3);
-        grafo.connect(2, 1,7);
-        grafo.connect(2, 4,8);
-        grafo.connect(2, 3,2);
-        grafo.connect(3, 1,5);
-        grafo.connect(3, 4,1);
-        grafo.connect(4, 3,2);
+        grafo.connect(1, 4, 3);
+        grafo.connect(2, 1, 7);
+        grafo.connect(2, 4, 8);
+        grafo.connect(2, 3, 2);
+        grafo.connect(3, 1, 5);
+        grafo.connect(3, 4, 1);
+        grafo.connect(4, 3, 2);
         grafo.printAdjacencyMatrix();
         System.out.println("--------------");
         grafo.Warshall();
     }
-    public static void FloyAlgorithm(){
-        GraphAMFloyd<Integer> grafo=new GraphAMFloyd<>(true,(a, b) -> {
-            return a-b; //To change body of generated lambdas, choose Tools | Templates.
+
+    public static void FloyAlgorithm() {
+        GraphAMFloyd<Integer> grafo = new GraphAMFloyd<>(true, (a, b) -> {
+            return a - b; //To change body of generated lambdas, choose Tools | Templates.
         });
         grafo.addVertex(1);
         grafo.addVertex(2);
         grafo.addVertex(3);
         grafo.addVertex(4);
-        grafo.connect(1, 2,3);
-        grafo.connect(1, 4,7);
-        grafo.connect(2, 1,8);
-        grafo.connect(2, 3,2);
-        grafo.connect(3, 1,5);
-        grafo.connect(3, 4,1);
-        grafo.connect(4, 1,2);
+        grafo.connect(1, 2, 3);
+        grafo.connect(1, 4, 7);
+        grafo.connect(2, 1, 8);
+        grafo.connect(2, 3, 2);
+        grafo.connect(3, 1, 5);
+        grafo.connect(3, 4, 1);
+        grafo.connect(4, 1, 2);
         grafo.printAdjacencyMatrix();
         System.out.println("--------------");
         grafo.Floyd();
     }
+
     public static void DijktraAlgorithm() {
         GraphALDijkstra<String, Integer> grafo1 = new GraphALDijkstra<>(true, (a, b) -> {
             return a.compareTo(b);
@@ -104,10 +134,10 @@ public class Main {
             VertexDijkstra<String, Integer> v = it.next();
             System.out.println(v);
         }
-        Map<String,Integer> mapa=grafo1.DijkstraAlgorith("A");
-        Set<String> claves=mapa.keySet();
+        Map<String, Integer> mapa = grafo1.DijkstraAlgorith("A");
+        Set<String> claves = mapa.keySet();
         for (String clave : claves) {
-            System.out.println("Valor: "+clave+" Distancia: "+mapa.get(clave));
+            System.out.println("Valor: " + clave + " Distancia: " + mapa.get(clave));
         }
     }
 
@@ -262,7 +292,7 @@ public class Main {
         grafo.addVertex(new Personas("David", 20));
         grafo.addVertex(new Personas("Maria", 22));
         grafo.addVertex(new Personas("Andres", 21));
-        grafo.connect(grafo.getV(0), grafo.getV(1),4);
+        grafo.connect(grafo.getV(0), grafo.getV(1), 4);
         System.out.println("booleano comprobar: " + grafo.isAdyacente(grafo.getV(0), grafo.getV(2)));
         grafo.printArreglo();
         grafo.printAdjacencyMatrix();
@@ -290,10 +320,6 @@ public class Main {
         ah.imprimirArreglo();
         ah.desencolar();
         ah.imprimirArreglo();
-    }
-
-    public static void binarySearchTree() {
-
     }
 
     public static void HuffmanInfo() {
