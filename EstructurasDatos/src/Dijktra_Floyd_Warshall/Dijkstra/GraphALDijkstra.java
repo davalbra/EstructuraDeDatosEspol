@@ -52,19 +52,16 @@ public class GraphALDijkstra<V, E> {
         }
         while (!pqv.isEmpty()) {
             EdgeDijkstra<E, V> e = pqv.poll();
-            System.out.println("ojito con esto: " + e.getWeight());
             if (mapa.containsKey(e.getTarget().getContent())) {
                 if (e.getWeight() + e.getSource().getDistanciaAcumulativa() < mapa.get(e.getTarget().getContent())) {
                     VertexDijkstra<V, E> target = e.getTarget();
                     target.setDistanciaAcumulativa(e.getWeight() + e.getSource().getDistanciaAcumulativa());
-                    System.out.println("mira la acomulacion: " + target.getContent() + " peso: " + target.getDistanciaAcumulativa() + " cosa previa en el mapa:" + mapa.get(e.getTarget().getContent()));
                     mapa.replace(target.getContent(), target.getDistanciaAcumulativa());
 
                 }
             } else {
                 VertexDijkstra<V, E> target = e.getTarget();
                 target.setDistanciaAcumulativa(e.getSource().getDistanciaAcumulativa() + e.getWeight());
-                System.out.println("source: " + e.getSource().getContent() + " valorAcomulado: " + e.getSource().getDistanciaAcumulativa() + " valor: " + target.getContent() + " valorAcomulado: " + e.getTarget().getDistanciaAcumulativa());
                 mapa.put(target.getContent(), target.getDistanciaAcumulativa());
                 e.getSource().setIsVisited(true);
                 for (EdgeDijkstra<E, V> edg : e.getTarget().getEdges()) {

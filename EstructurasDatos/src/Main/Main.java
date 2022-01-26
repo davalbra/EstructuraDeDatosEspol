@@ -38,7 +38,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        binarySearchTree();
+        HuffmanInfo();
     }
 
     public static void binarySearchTree() {
@@ -324,7 +324,8 @@ public class Main {
 
     public static void HuffmanInfo() {
 
-        String cadena = leerArchivo("src/Texto/tex.txt");
+        //String cadena = leerArchivo("src/Texto/tex.txt");
+        String cadena = "hola como andamos";
         System.out.println(cadena);
         System.out.println("------------------1------------------");
         Map<String, Integer> frecuencia = HuffmanInfo.getFrequencies(cadena);
