@@ -63,20 +63,15 @@ public class BTSTree<K, V> {
 
     public void insertNodeByKEy(BTSTree<K, V> tree) {
         tree.setCmp(cmp);
-        System.out.println("actual: " + root.getKey());
-        System.out.println("llegada: " + tree.getRoot().getKey());
         if (this.getRoot().getContent() == null) {
-            System.out.println("valor: " + tree.getRoot().getKey());
             root = tree.getRoot();
         } else if (cmp.compare(this.root.getKey(), tree.getRoot().getKey()) < 0) {
-            System.out.println("hola");
             if (this.getRight() != null) {
                 getRight().insertNodeByKEy(tree);
             } else {
                 this.setRight(tree);
             }
         } else {
-            System.out.println("chao");
             if (this.getLeft() != null) {
                 System.out.println(this.getLeft().getRoot().getKey());
                 getLeft().insertNodeByKEy(tree);
@@ -107,9 +102,6 @@ public class BTSTree<K, V> {
         if (this.isEmpty()) {
             return null;
         }
-        System.out.println("fF");
-        System.out.println("a: " + this.getRoot().getKey());
-        System.out.println("b: " + k);
         if (cmp.compare(this.getRoot().getKey(), k) == 0) {
             return root.getContent();
         } else if (cmp.compare(this.getRoot().getKey(), k) < 0) {

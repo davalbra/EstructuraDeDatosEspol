@@ -83,6 +83,8 @@ public class BalancedTree<K, V> {
         this.cmp = cmp;
     }
 
+    
+
     public void insert(BalancedTree<K, V> newTree) {
 
         if (this.isEmpty()) {
@@ -160,8 +162,6 @@ public class BalancedTree<K, V> {
 
         return "" + firstMove + seconMove;
     }
-
-
 
     public void simpleRotationRight() {
         BalancedTree<K, V> tmp = null;
